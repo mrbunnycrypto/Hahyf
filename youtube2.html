@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artplayer with Video Upload</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.css">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #121212;
+        }
+
+        #art-container {
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        #videos-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .video-item {
+            width: 150px;
+            height: 100px;
+            background-color: #333;
+            border: 1px solid #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .upload-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #42b983;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .upload-btn:hover {
+            background-color: #369b74;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="art-container"></div>
+    <div id="videos-container"></div>
+    <label for="upload-input" class="upload-btn">Upload Video</label>
+    <input type="file" id="upload-input" accept="video/*">
+
+    <script src="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const art = new Artplayer({
+                container: '#art-container',
+                url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                poster: 'https://www.w3schools.com/html/img_girl.jpg',
+                title: 'Sample Video',
+                theme: '#42b983',
+                controls: true,
+            });
+
+            const videosContainer = document.getElementById('videos-container');
+            const uploadInput = document.getElementById('upload-input');
+
+            // Add a default video to the container
+            addVideoItem('https://www.w3schools.com/html/mov_bbb.mp4', 'Sample Video');
+
+            // Function to add a video to the container
+            function addVideoItem(url, title) {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+                videoItem.textContent = title;
+                videoItem.addEventListener('click', () => {
+                    art.switchUrl(url, title);
+                });
+                videosContainer.appendChild(videoItem);
+            }
+
+            // Handle video upload
+            uploadInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const url = URL.createObjectURL(file);
+                    const title = file.name;
+                    art.switchUrl(url, title);
+                    addVideoItem(url, title);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
