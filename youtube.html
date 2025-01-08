@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artplayer Example</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.css">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+        }
+        #art-container {
+            width: 80%;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div id="art-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const art = new Artplayer({
+                container: '#art-container',
+                url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                poster: 'https://www.w3schools.com/html/img_girl.jpg',
+                title: 'Sample Video',
+                volume: 0.5,
+                autoplay: false,
+                playbackRate: [0.5, 1.0, 1.5, 2.0],
+                theme: '#42b983',
+                controls: true,
+                setting: true,
+                plugins: [],
+                layers: [
+                    {
+                        html: '<div style="color: white; font-size: 24px; text-align: center;">Overlay Text</div>',
+                        click: () => console.log('Layer clicked!'),
+                        style: {
+                            top: '20px',
+                            right: '20px',
+                        },
+                    },
+                ],
+                customType: {
+                    customFormat: (video, url) => {
+                        console.log('Playing custom format:', url);
+                        video.src = url;
+                    },
+                },
+            });
+
+            // Example event listener
+            art.on('ready', () => {
+                console.log('Artplayer is ready!');
+            });
+        });
+    </script>
+</body>
+</html>
